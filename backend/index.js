@@ -33,21 +33,22 @@ No guarantees.
 `;
 
     // NEW Responses API (supports images)
-    const response = await openai.responses.create({
-      model: "gpt-4.1-mini",
-      input: [
+const response = await openai.responses.create({
+  model: "gpt-4.1-mini",
+  input: [
+    {
+      role: "user",
+      content: [
+        { type: "input_text", text: prompt },
         {
-          role: "user",
-          content: [
-            { type: "input_text", text: prompt },
-            {
-              type: "input_image",
-              image_base64: base64Image
-            }
-          ]
+          type: "input_image",
+          image_url: `data:${req.file.mimetype};base64,${base64Image}`
         }
       ]
-    });
+    }
+  ]
+});
+
 
     const prediction =
       response.output_text?.trim() ||
